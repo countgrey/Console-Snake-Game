@@ -1,37 +1,61 @@
-﻿namespace SnakeGame;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+
+namespace SnakeGame;
 
 class Program
 {
-    private const int width = 100;
-    private const int height = 100;
+    private const int width = 50;
+    private const int height = 50;
 
     private const ConsoleColor borderColor = ConsoleColor.White;
 
-    public static void Main()
+    public static GameObject Border;
+
+    protected static void Init()
     {
         Console.SetWindowSize(width, height);
-        Console.SetBufferSize(width+1, height+1);
+        Console.SetBufferSize(width, height);
         Console.CursorVisible = false;
 
-        new Pixel(10, 10, borderColor).Draw();
-        DrawBorder();
+        Border = new(CreateBorder(1, 1, 1, 1));
 
-        Console.ReadKey();
     }
 
-    private static void DrawBorder()
+    private static int Loop()
     {
-        for (int y = 0; y <= height; y++)
+        Border.Draw();
+        return 0;
+    }
+
+    public static void Main()
+    {
+        Init();
+
+        for( ; ; )
         {
-            for (int x = 0; x <= width; x++)
-            {
-                if (x == width-1 || y == height-1 || x == 0 || y == 1)
-                {
-                    new Pixel(x, y, borderColor).Draw();
-                }
-            }
-            Console.WriteLine();
+            if (Loop() !=0 ) break;
+            System.Threading.Thread.Sleep(3);
+            Console.Clear();
+        }
+    }
+
+    private static List<Pixel> CreateBorder(int xOffset = 0, int yOffset = 0, int bottomOffset = 0, int rightOffset = 0)
+    { 
+        var border = new List<Pixel>();
+        
+        for (int y = yOffset; y <= height - yOffset; y++)
+        {
+            border.Add(new Pixel(0, y, borderColor));
+            border.Add(new Pixel(width-rightOffset, y, borderColor));
         }
 
+        for (int x = xOffset; x <= width - xOffset; x++)
+        {
+            border.Add(new Pixel(x, 0, borderColor));
+            border.Add(new Pixel(x, height-bottomOffset, borderColor));
+        }
+
+        return border;
     }
 }

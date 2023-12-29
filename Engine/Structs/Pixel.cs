@@ -1,6 +1,6 @@
 ﻿namespace SnakeGame;
 
-public readonly struct Pixel(int x, int y, ConsoleColor color)
+public readonly struct Pixel(int x, int y, ConsoleColor color = ConsoleColor.White)
 {
     private readonly char _char = '█';
 
