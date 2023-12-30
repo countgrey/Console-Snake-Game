@@ -1,16 +1,25 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-
-namespace SnakeGame;
+﻿namespace SnakeGame;
 
 class Program
 {
-    private const int width = 50;
-    private const int height = 50;
+    public const int width = 50;
+    public const int height = 50;
+
+    public const int borderLeftOffset = 1;
+    public const int borderTopOffset = 1;
+    public const int borderRightOffset = 1;
+    public const int borderBottomOffset = 1;
+
+    private const int msFrameLatency = 50;
 
     private const ConsoleColor borderColor = ConsoleColor.White;
+    private const ConsoleColor SnakeColor = ConsoleColor.White;
 
     public static GameObject Border;
+    public static Snake Player;
+    public static Fruit Apple;
+
+    private const string defaultDirection = "Right";
 
     protected static void Init()
     {
@@ -18,13 +27,45 @@ class Program
         Console.SetBufferSize(width, height);
         Console.CursorVisible = false;
 
-        Border = new(CreateBorder(1, 1, 1, 1));
+        Engine.ObjectList = 
+        [
+            new GameObject(CreateBorder(borderLeftOffset, borderTopOffset, borderRightOffset, borderBottomOffset)),
+            new Snake(5, Snake.directions[defaultDirection], SnakeColor),
+            new Fruit()
+        ];
 
+        Border = Engine.ObjectList[0];
+        Player = (Snake)Engine.ObjectList[1];
+        Apple = (Fruit)Engine.ObjectList[2];
     }
 
     private static int Loop()
     {
         Border.Draw();
+        Player.Draw();
+        Apple.Draw();
+
+        string keyInput = ControlInput();
+        if (keyInput != " ") Player.Direction = Snake.directions[keyInput];
+
+        if  (Player.TouchedObject() != null)
+        {
+            if (Player.TouchedObject().Name == "Apple")
+            {
+                Player.Crawl(false);
+            }
+        }
+        else Player.Crawl();
+
+        if (Apple.TouchedObject() != null) 
+        {
+            if (Apple.TouchedObject().Name == "Snake")
+            {
+                Apple.ChangePosition();
+            }
+        }
+        
+
         return 0;
     }
 
@@ -34,10 +75,29 @@ class Program
 
         for( ; ; )
         {
-            if (Loop() !=0 ) break;
-            System.Threading.Thread.Sleep(3);
+            if (Loop() != 0) break;
+            Thread.Sleep(msFrameLatency);
             Console.Clear();
         }
+    }
+
+    private static string ControlInput()
+    {
+        ConsoleKey key = ConsoleKey.R;
+        if(Console.KeyAvailable == true) key = Console.ReadKey().Key;
+
+        Dictionary<ConsoleKey, string> controls = new()
+        {
+            { ConsoleKey.RightArrow , "Right" },
+            { ConsoleKey.LeftArrow , "Left" },
+            { ConsoleKey.UpArrow , "Up" },
+            { ConsoleKey.DownArrow , "Down" }
+        };
+
+        string? outputDirection = " ";
+        if (controls.TryGetValue(key, out string? value)) outputDirection = value;
+
+        return outputDirection;
     }
 
     private static List<Pixel> CreateBorder(int xOffset = 0, int yOffset = 0, int bottomOffset = 0, int rightOffset = 0)

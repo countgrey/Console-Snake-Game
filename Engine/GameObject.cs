@@ -1,22 +1,55 @@
-﻿namespace SnakeGame
+﻿namespace SnakeGame;
+
+public class GameObject
 {
-    public class GameObject
-    {
-        protected List<Pixel> body = [];
+    public int debugValue = 0;
 
-        public GameObject(List<Pixel> body)
-        {
-            this.body = body;
+    private List<Pixel> body = [];
+    public List<int[]> Skeleton { get; } = [];
+    public string Name { get; set; } = "UntitledObject";
+
+    public List<Pixel> Body
+    { 
+        get { return body; }
+        set 
+        { 
+            body = value;
         }
+    }
 
-        public GameObject() { }
+    public GameObject(List<Pixel> body) : base() => this.body = body;
 
-        public void Draw()
+    public GameObject()
+    {
+        foreach (Pixel pix in body)
         {
-            foreach (Pixel pix in body) 
+            Skeleton.Add([pix.X, pix.Y]);
+        }
+    }
+
+    public void Draw()
+    {
+        foreach (Pixel pix in body) 
+        {
+            pix.Draw();
+        }
+    }
+
+
+    private List<GameObject> objects = [];
+    public GameObject? TouchedObject()
+    {
+        objects = Engine.ObjectList;
+        objects.Remove(this);
+
+        foreach(GameObject obj in objects)
+        {
+            foreach (int[] pos in Skeleton)
             {
-                pix.Draw();
+                if (obj.Skeleton.Contains(pos)) return obj;
             }
         }
+
+        return null;
     }
 }
