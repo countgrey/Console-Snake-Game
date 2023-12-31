@@ -38,6 +38,7 @@
 
             head = new Pixel(head.X + Direction.ColumnOffset, head.Y + Direction.RowOffset, SnakeColor);
             Body.Add(head);
+            updateSkeleton();
         }
     }
 }

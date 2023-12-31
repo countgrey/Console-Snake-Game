@@ -14,6 +14,7 @@
         public void ChangePosition()
         {
             Body[0] = new Pixel(new Random().Next(5, 20), new Random().Next(5, 20), Color);
+            updateSkeleton();
         }
     }
 }

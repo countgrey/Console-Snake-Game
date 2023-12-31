@@ -5,7 +5,7 @@ public class GameObject
     public int debugValue = 0;
 
     private List<Pixel> body = [];
-    public List<int[]> Skeleton { get; } = [];
+    public List<int[]> Skeleton { get; set;  } = [];
     public string Name { get; set; } = "UntitledObject";
 
     public List<Pixel> Body
@@ -21,11 +21,18 @@ public class GameObject
 
     public GameObject()
     {
+        updateSkeleton();
+    }
+
+    protected void updateSkeleton()
+    {
+        Skeleton = [];
         foreach (Pixel pix in body)
         {
             Skeleton.Add([pix.X, pix.Y]);
         }
     }
+
 
     public void Draw()
     {
@@ -42,12 +49,10 @@ public class GameObject
         objects = Engine.ObjectList;
         objects.Remove(this);
 
-        foreach(GameObject obj in objects)
+        foreach (GameObject obj in objects)
         {
-            foreach (int[] pos in Skeleton)
-            {
-                if (obj.Skeleton.Contains(pos)) return obj;
-            }
+
+            IEnumerable<int[]> mathes = obj.Skeleton.Intersect(Skeleton);
         }
 
         return null;
