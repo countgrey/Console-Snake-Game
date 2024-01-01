@@ -2,28 +2,31 @@
 
 public class Border : GameObject
 {
-    public Border()
+    private ConsoleColor color = ConsoleColor.White;
+
+    public Border(ConsoleColor _color = ConsoleColor.White, int borderThickness = 1) : base()
     {
+        color = _color;
+        for (int i = 0; i < borderThickness; i++)
+        {
+            body.AddRange(CreateBorder(color, i));
+        }
     }
 
-    public Border(List<Pixel> body) : base(body)
-    {
-    }
-
-    public static List<Pixel> CreateBorder(int xOffset = 0, int yOffset = 0, int bottomOffset = 0, int rightOffset = 0, ConsoleColor borderColor = ConsoleColor.White)
+    private static List<Pixel> CreateBorder(ConsoleColor borderColor, int offset)
     {
         var border = new List<Pixel>();
 
-        for (int y = yOffset; y <= Engine.height - yOffset; y++)
+        for (int y = Engine.borderTopOffset + offset; y <= Engine.height - (Engine.borderBottomOffset + offset); y++)
         {
-            border.Add(new Pixel(0, y, borderColor));
-            border.Add(new Pixel(Engine.width - rightOffset, y, borderColor));
+            border.Add(new Pixel(Engine.borderLeftOffset + offset, y, borderColor));
+            border.Add(new Pixel(Engine.width - (Engine.borderRightOffset + offset), y, borderColor));
         }
 
-        for (int x = xOffset; x <= Engine.width - xOffset; x++)
+        for (int x = Engine.borderLeftOffset + offset; x <= Engine.width - (Engine.borderRightOffset + offset); x++)
         {
-            border.Add(new Pixel(x, 0, borderColor));
-            border.Add(new Pixel(x, Engine.height - bottomOffset, borderColor));
+            border.Add(new Pixel(x, Engine.borderTopOffset + offset, borderColor));
+            border.Add(new Pixel(x, Engine.height - (Engine.borderBottomOffset + offset), borderColor));
         }
 
         return border;

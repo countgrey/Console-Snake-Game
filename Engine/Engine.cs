@@ -5,14 +5,12 @@ public class Engine
     public const int width = 50;
     public const int height = 50;
 
-    public const int borderLeftOffset = 1;
-    public const int borderTopOffset = 1;
+    public const int borderLeftOffset = 0;
+    public const int borderTopOffset = 0;
     public const int borderRightOffset = 1;
     public const int borderBottomOffset = 1;
 
-    public const int bottomInfoSize = 0;
-
-    public const int msFrameLatency = 50;
+    public const int bottomInfoSize = 2;
     public static int debugValue = 0;
 
     private static List<GameObject> objectList = [];
@@ -44,5 +42,11 @@ public class Engine
         Console.SetCursorPosition(width/2, height/2);
         Console.Write("GAME OVER!");
         Console.ReadKey();
+    }
+
+    public static void ShowScore(int score)
+    {
+        Console.SetCursorPosition(borderLeftOffset, height + bottomInfoSize - 1);
+        Console.Write($"Score: {score}");
     }
 }

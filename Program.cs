@@ -5,11 +5,17 @@ class Program
     private const ConsoleColor borderColor = ConsoleColor.White;
     private const ConsoleColor SnakeColor = ConsoleColor.White;
 
+    private const int borderThickness = 1;
+
     private static Border MainBorder;
     private static Snake Player;
     private static Fruit Apple;
 
+    private static int score = 0;
+
     private const string defaultDirection = "Right";
+
+    public const int msFrameLatency = 50;
 
     protected static void Init()
     {
@@ -19,7 +25,7 @@ class Program
 
         Engine.ObjectList = 
         [
-            new Border(Border.CreateBorder(Engine.borderLeftOffset, Engine.borderTopOffset, Engine.borderRightOffset, Engine.borderBottomOffset, ConsoleColor.White)),
+            new Border(borderColor, borderThickness),
             new Snake(5, Snake.directions[defaultDirection], SnakeColor),
             new Fruit()
         ];
@@ -43,6 +49,7 @@ class Program
             case GameObject value when value == Apple:
                 Apple.ChangePosition();
                 if (Player.Crawl(false)) return 1;
+                score += 1;
                 break;
 
             case GameObject value when value == MainBorder:
@@ -53,6 +60,8 @@ class Program
                 break;
         }
 
+        Engine.ShowScore(score);
+
         return 0;
     }
 
@@ -62,7 +71,7 @@ class Program
 
         while(Loop() == 0)
         {
-            Thread.Sleep(Engine.msFrameLatency);
+            Thread.Sleep(msFrameLatency);
             Console.Clear();
         }
 

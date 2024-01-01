@@ -8,4 +8,8 @@
     <StartupObject>SnakeGame.Program</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Engine\NewFolder\" />
+  </ItemGroup>
+
 </Project>
