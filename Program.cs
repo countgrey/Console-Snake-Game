@@ -2,7 +2,7 @@
 
 class Program
 {
-    private const ConsoleColor borderColor = ConsoleColor.White;
+    private const ConsoleColor borderColor = ConsoleColor.Blue;
     private const ConsoleColor SnakeColor = ConsoleColor.Red;
     private static Border MainBorder;
     private static Snake Player;

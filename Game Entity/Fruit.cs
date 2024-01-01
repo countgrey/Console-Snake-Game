@@ -8,9 +8,7 @@ public class Fruit : GameObject
     public Fruit(ConsoleColor color = ConsoleColor.Green) : base()
     {
         Color = color;
-        Body.Add(new Pixel(new Random().Next(Engine.borderLeftOffset, Engine.width - Engine.borderRightOffset),
-                new Random().Next(Engine.borderTopOffset, Engine.height - Engine.borderBottomOffset),
-                Color));
+        Body.Add(new Pixel());
         ChangePosition();
     }
 
@@ -18,8 +16,8 @@ public class Fruit : GameObject
     {
         Body[0] = new Pixel
             (
-                new Random().Next(Engine.borderLeftOffset, Engine.width - Engine.borderRightOffset) - Engine.borderThickness,
-                new Random().Next(Engine.borderTopOffset, Engine.height - Engine.borderBottomOffset) - Engine.borderThickness, 
+                new Random().Next(Engine.borderLeftOffset + Engine.borderThickness, Engine.width - Engine.borderRightOffset - Engine.borderThickness),
+                new Random().Next(Engine.borderTopOffset + Engine.borderThickness, Engine.height - Engine.borderBottomOffset - Engine.borderThickness), 
                 Color
             );
     }
