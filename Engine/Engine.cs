@@ -1,9 +1,13 @@
-﻿namespace SnakeGame;
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace SnakeGame;
 
 public class Engine
 {
     public const int width = 50;
     public const int height = 50;
+
+    public static bool colored = false;
 
     public const int borderLeftOffset = 0;
     public const int borderTopOffset = 0;
@@ -11,6 +15,8 @@ public class Engine
     public const int borderBottomOffset = 1;
 
     public const int bottomInfoSize = 2;
+
+    public static int borderThickness = 1;
     public static int debugValue = 0;
 
     private static List<GameObject> objectList = [];
@@ -36,11 +42,11 @@ public class Engine
         return outputDirection;
     }
 
-    public static void GameOver()
+    public static void GameOver(int score)
     {
         Console.Clear();
         Console.SetCursorPosition(width/2, height/2);
-        Console.Write("GAME OVER!");
+        Console.WriteLine($"GAME OVER! \n                       Your score: {score}");
         Console.ReadKey();
     }
 

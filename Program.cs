@@ -3,13 +3,14 @@
 class Program
 {
     private const ConsoleColor borderColor = ConsoleColor.White;
-    private const ConsoleColor SnakeColor = ConsoleColor.White;
-
-    private const int borderThickness = 1;
-
+    private const ConsoleColor SnakeColor = ConsoleColor.Red;
     private static Border MainBorder;
     private static Snake Player;
     private static Fruit Apple;
+
+    private static int borderThickness = 1;
+
+    private static bool colored = true;
 
     private static int score = 0;
 
@@ -22,6 +23,9 @@ class Program
         Console.SetWindowSize(Engine.width, Engine.height + Engine.bottomInfoSize);
         Console.SetBufferSize(Engine.width, Engine.height + Engine.bottomInfoSize);
         Console.CursorVisible = false;
+
+        Engine.borderThickness = borderThickness;
+        Engine.colored = colored;
 
         Engine.ObjectList = 
         [
@@ -65,6 +69,7 @@ class Program
         return 0;
     }
 
+
     public static void Main()
     {
         Init();
@@ -74,7 +79,7 @@ class Program
             Thread.Sleep(msFrameLatency);
             Console.Clear();
         }
-
-        Engine.GameOver();
+        Engine.GameOver(score);
     }
+
 }

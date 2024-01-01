@@ -28,8 +28,9 @@ public class Snake : GameObject
 
     Pixel head;
 
-    public Snake(int length, Direction direction_, ConsoleColor SnakeColor) : base()
+    public Snake(int length, Direction direction_, ConsoleColor snakeColor = ConsoleColor.White) : base()
     {
+        SnakeColor = snakeColor;
         for (int i = 0; i < length - 1; i++)
         {
             Body.Add(new Pixel(i, 5, SnakeColor));

@@ -12,7 +12,7 @@ public readonly struct Pixel(int x, int y, ConsoleColor color = ConsoleColor.Whi
     public void Draw()
     {
         Console.SetCursorPosition(X, Y);
-        //Console.ForegroundColor = Color;
+        if (Engine.colored) Console.ForegroundColor = Color;
         Console.Write(_char);
     }
 }
