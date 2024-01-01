@@ -5,9 +5,9 @@ class Program
     private const ConsoleColor borderColor = ConsoleColor.White;
     private const ConsoleColor SnakeColor = ConsoleColor.White;
 
-    public static Border MainBorder;
-    public static Snake Player;
-    public static Fruit Apple;
+    private static Border MainBorder;
+    private static Snake Player;
+    private static Fruit Apple;
 
     private const string defaultDirection = "Right";
 
@@ -36,26 +36,22 @@ class Program
         Apple.Draw();
 
         string keyInput = Engine.ControlInput();
-        if (keyInput != " ") Player.Direction = Snake.directions[keyInput];
-        
-        if  (Player.TouchedObject() != null)
-        {
-            if (Player.TouchedObject().Name == "Apple")
-            {
-                Player.Crawl(false);
-            }
-        }
-        else Player.Crawl();
+        if (keyInput != " ") Player.Direction_ = Snake.directions[keyInput];
 
-        /*
-        if (Apple.TouchedObject() != null) 
+        switch (Player.TouchedObject())
         {
-            if (Apple.TouchedObject().Name == "Snake")
-            {
+            case GameObject value when value == Apple:
                 Apple.ChangePosition();
-            }
+                if (Player.Crawl(false)) return 1;
+                break;
+
+            case GameObject value when value == MainBorder:
+                return 1;
+
+            default:
+                if(Player.Crawl()) return 1;
+                break;
         }
-        */
 
         return 0;
     }
@@ -64,11 +60,12 @@ class Program
     {
         Init();
 
-        for( ; ; )
+        while(Loop() == 0)
         {
-            if (Loop() != 0) break;
             Thread.Sleep(Engine.msFrameLatency);
             Console.Clear();
         }
+
+        Engine.GameOver();
     }
 }

@@ -37,4 +37,12 @@ public class Engine
 
         return outputDirection;
     }
+
+    public static void GameOver()
+    {
+        Console.Clear();
+        Console.SetCursorPosition(width/2, height/2);
+        Console.Write("GAME OVER!");
+        Console.ReadKey();
+    }
 }

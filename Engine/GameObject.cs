@@ -4,9 +4,7 @@ public class GameObject
 {
     public int debugValue = 0;
 
-    private List<Pixel> body = [];
-    public List<int[]> Skeleton { get; set;  } = [];
-    public string Name { get; set; } = "UntitledObject";
+    protected List<Pixel> body = [];
 
     public List<Pixel> Body
     { 
@@ -21,16 +19,7 @@ public class GameObject
 
     public GameObject()
     {
-        updateSkeleton();
-    }
-
-    protected void updateSkeleton()
-    {
-        Skeleton = [];
-        foreach (Pixel pix in body)
-        {
-            Skeleton.Add([pix.X, pix.Y]);
-        }
+        
     }
 
 
@@ -42,17 +31,16 @@ public class GameObject
         }
     }
 
-
-    private List<GameObject> objects = [];
     public GameObject? TouchedObject()
     {
-        objects = Engine.ObjectList;
+        List<GameObject> objects = Engine.ObjectList;
         objects.Remove(this);
-
         foreach (GameObject obj in objects)
         {
-
-            IEnumerable<int[]> mathes = obj.Skeleton.Intersect(Skeleton);
+            foreach (Pixel pos in obj.Body)
+            {
+                if((pos.X, pos.Y) == (Body.Last().X, Body.Last().Y)) return obj;
+            }
         }
 
         return null;
